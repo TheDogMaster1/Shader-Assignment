@@ -61,10 +61,25 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.66f2\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\MeshCreators\CreateOctahedron.cs" />
+    <Compile Include="Assets\Scripts\MeshModifiers\MeshBreathe.cs" />
+    <Compile Include="Assets\Scripts\MeshCreators\CreateStairs.cs" />
     <Compile Include="Assets\Scripts\TextureExporter.cs" />
+    <Compile Include="Assets\Scripts\SaveMeshToOBJ.cs" />
+    <Compile Include="Assets\Scripts\MeshModifiers\AutoUv.cs" />
     <Compile Include="Assets\Scripts\TextureModifier.cs" />
+    <Compile Include="Assets\Scripts\MeshCreators\MeshCreator.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Curve.cs" />
+    <Compile Include="Assets\Scripts\MeshCreators\Extrude.cs" />
     <Compile Include="Assets\Scripts\TextureCreator.cs" />
+    <Compile Include="Assets\Scripts\MeshBuilder.cs" />
+    <Compile Include="Assets\Scripts\MeshModifiers\TextureCycle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ShadersMaterials\DefaultShader.shader" />
+    <None Include="Assets\ShadersMaterials\PatternShader.shader" />
+    <None Include="Assets\ShadersMaterials\Mandelbrot.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
