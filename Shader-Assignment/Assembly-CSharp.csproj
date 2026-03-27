@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\MeshCreators\CreateOctahedron.cs" />
     <Compile Include="Assets\Scripts\MeshModifiers\MeshBreathe.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\CreateStairs.cs" />
+    <Compile Include="Assets\Scripts\MeshCreators\CreatePaintingFrame.cs" />
     <Compile Include="Assets\Scripts\TextureExporter.cs" />
     <Compile Include="Assets\Scripts\SaveMeshToOBJ.cs" />
     <Compile Include="Assets\Scripts\MeshModifiers\AutoUv.cs" />
