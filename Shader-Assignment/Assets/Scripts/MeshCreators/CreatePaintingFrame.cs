@@ -18,28 +18,28 @@ public class CreateFrame : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             //front
-            int v1 = builder.AddVertex(transform.position + vec1);
-            int v2 = builder.AddVertex(transform.position + vec2);
-            int v3 = builder.AddVertex(transform.position + vec3);
-            int v4 = builder.AddVertex(transform.position + vec4);
+            int v1 = builder.AddVertex(vec1);
+            int v2 = builder.AddVertex(vec2);
+            int v3 = builder.AddVertex(vec3);
+            int v4 = builder.AddVertex(vec4);
 
             //top
-            int v5 = builder.AddVertex(transform.position + vec1);
-            int v6 = builder.AddVertex(transform.position + vec3);
-            int v7 = builder.AddVertex(transform.position + vec5);
-            int v8 = builder.AddVertex(transform.position + vec6);
+            int v5 = builder.AddVertex(vec1);
+            int v6 = builder.AddVertex(vec3);
+            int v7 = builder.AddVertex(vec5);
+            int v8 = builder.AddVertex(vec6);
 
             //bottom
-            int v9 = builder.AddVertex(transform.position + vec2);
-            int v10 = builder.AddVertex(transform.position + vec4);
-            int v11 = builder.AddVertex(transform.position + vec7);
-            int v12 = builder.AddVertex(transform.position + vec8);
+            int v9 = builder.AddVertex(vec2);
+            int v10 = builder.AddVertex(vec4);
+            int v11 = builder.AddVertex(vec7);
+            int v12 = builder.AddVertex(vec8);
 
             //left
-            int v13 = builder.AddVertex(transform.position + vec4);
-            int v14 = builder.AddVertex(transform.position + vec3);
-            int v15 = builder.AddVertex(transform.position + vec8);
-            int v16 = builder.AddVertex(transform.position + vec6);
+            int v13 = builder.AddVertex(vec4);
+            int v14 = builder.AddVertex(vec3);
+            int v15 = builder.AddVertex(vec8);
+            int v16 = builder.AddVertex(vec6);
 
             //front
             builder.AddTriangle(v1, v2, v3);
@@ -56,7 +56,6 @@ public class CreateFrame : MonoBehaviour
             //left
             builder.AddTriangle(v13, v15, v14);
             builder.AddTriangle(v16, v14, v15);
-            Debug.Log(vec1);
             vec1 = RotateVector(vec1);
             vec2 = RotateVector(vec2);
             vec3 = RotateVector(vec3);
@@ -66,7 +65,9 @@ public class CreateFrame : MonoBehaviour
             vec7 = RotateVector(vec7);
             vec8 = RotateVector(vec8);
         }
-
+        Debug.Log(transform.position);
+        Debug.Log(vec1);
+        Debug.Log(transform.position + vec1);
         GetComponent<MeshFilter>().mesh = builder.CreateMesh();
     }
 
