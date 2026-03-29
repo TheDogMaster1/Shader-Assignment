@@ -15,9 +15,20 @@ public class TextureCreator : MonoBehaviour
 
     public bool rotate = false;
 
+    [Header("Rotation settings")]
     [Range(0, 360)]
     public int degrees;
+    private float decimalDegrees = 0;
+    public bool autoRotate;
+    public float rotationSpeed = 1;
 
+    [Header("Noise settings")]
+
+    public Color noiseColor = Color.white;
+    public float uMultiplier = 1.0f;
+    public float vMultiplier = 1.0f;
+
+    public float colorAdder = 0.5f;
     void Start()
     {
         // Create a texture and pass it to the material of this game object's renderer:
@@ -41,7 +52,10 @@ public class TextureCreator : MonoBehaviour
             case PatternType.Noise: // white noise				
                 return Random.value * Color.white;
             case PatternType.NoiseWithGray:
-                Color noise = Mathf.PerlinNoise(u * 100, v * 2) * Color.white;
+                float noisefloat = Mathf.PerlinNoise(u * uMultiplier, v * vMultiplier);
+                if (noisefloat < 0.5f) noisefloat += colorAdder;
+                //else noisefloat -= colorAdder;
+                Color noise = noisefloat * noiseColor;
                 return noise;
             case PatternType.Mandelbrot:
                 return Mandelbrot(3 * (u - 0.75f), 3 * (v - 0.5f));
@@ -121,6 +135,17 @@ public class TextureCreator : MonoBehaviour
             {
                 exporter.ExportTexture(texture);
             }
+        }
+
+        if (autoRotate)
+        {
+            decimalDegrees += Time.deltaTime * rotationSpeed;
+            degrees = Mathf.RoundToInt(decimalDegrees);
+            if (degrees > 360)
+            {
+                decimalDegrees = 0;
+            }
+            Draw();
         }
     }
 
