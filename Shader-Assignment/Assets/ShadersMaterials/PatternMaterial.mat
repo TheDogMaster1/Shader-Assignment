@@ -103,7 +103,7 @@ Material:
     - _Parallax: 0.005
     - _PatternType: 8
     - _QueueOffset: 0
-    - _Radius: 0.357
+    - _Radius: 0.269
     - _ReceiveShadows: 1
     - _Size: 0.1
     - _Smoothness: 0.5

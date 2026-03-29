@@ -4,7 +4,7 @@ using UnityEngine;
 public class TextureCreator : MonoBehaviour
 {
     // Add your own pattern types here:
-    public enum PatternType { Noise, None, Mandelbrot, UVS, Stripes, cos, experiment };
+    public enum PatternType { Noise, NoiseWithGray, None, Mandelbrot, UVS, Stripes, cos, experiment };
 
     public PatternType patternType;
 
@@ -40,6 +40,9 @@ public class TextureCreator : MonoBehaviour
         {
             case PatternType.Noise: // white noise				
                 return Random.value * Color.white;
+            case PatternType.NoiseWithGray:
+                Color noise = Mathf.PerlinNoise(u * 100, v * 2) * Color.white;
+                return noise;
             case PatternType.Mandelbrot:
                 return Mandelbrot(3 * (u - 0.75f), 3 * (v - 0.5f));
             case PatternType.UVS:
