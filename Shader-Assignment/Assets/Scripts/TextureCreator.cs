@@ -87,8 +87,17 @@ public class TextureCreator : MonoBehaviour
             float u = (float)x / (width - 1);
             float v = (float)y / (height - 1);
 
-            float x1 = (u * Mathf.Cos(degrees / Mathf.Rad2Deg) - v * Mathf.Sin(degrees / Mathf.Rad2Deg));
-            float y1 = (u * Mathf.Sin(degrees / Mathf.Rad2Deg) + v * Mathf.Cos(degrees / Mathf.Rad2Deg));
+            if (autoRotate)
+            {
+                decimalDegrees += Time.deltaTime * rotationSpeed;
+                degrees = Mathf.RoundToInt(decimalDegrees);
+                if (degrees > 360)
+                {
+                    decimalDegrees = 0;
+                }
+            }
+            float x1 = u * Mathf.Cos(degrees / Mathf.Rad2Deg) - v * Mathf.Sin(degrees / Mathf.Rad2Deg);
+            float y1 = u * Mathf.Sin(degrees / Mathf.Rad2Deg) + v * Mathf.Cos(degrees / Mathf.Rad2Deg);
             // TODO: calculate UV coordinates and pass them to CalculatePixelColor:
             //cols[index] = CalculatePixelColor(x1, y1, pattern);
 
@@ -137,16 +146,6 @@ public class TextureCreator : MonoBehaviour
             }
         }
 
-        if (autoRotate)
-        {
-            decimalDegrees += Time.deltaTime * rotationSpeed;
-            degrees = Mathf.RoundToInt(decimalDegrees);
-            if (degrees > 360)
-            {
-                decimalDegrees = 0;
-            }
-            Draw();
-        }
     }
 
     #region Mandelbrot
