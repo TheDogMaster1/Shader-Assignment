@@ -13,7 +13,9 @@ public class TextureCreator : MonoBehaviour
     Texture2D texture = null;
     Color[] cols = null;
 
-    public bool rotate = false;
+    public enum RotateType { none, corner, middle }
+
+    public RotateType rotateType;
 
     [Range(0, 1)]
     public float hue = 0;
@@ -65,7 +67,7 @@ public class TextureCreator : MonoBehaviour
             case PatternType.UVS:
                 return new Color(u, v, 0, 1);
             case PatternType.Stripes:
-                return Color.white * (Mathf.Floor((u * 10) % 2)) * v;
+                return Color.white * (Mathf.Floor((u * 10) % 2));
             case PatternType.cos:
                 return new Color(.5f + .5f * Mathf.Cos(2 * Mathf.PI * u), 0, 0, 1);
             case PatternType.rainbowfunc:
@@ -128,10 +130,19 @@ public class TextureCreator : MonoBehaviour
 
             float xUsed = u;
             float yUsed = v;
-            if (rotate)
+
+            switch (rotateType)
             {
-                xUsed = x1 + x / 2;
-                yUsed = y1 + y / 2;
+                case RotateType.none:
+                    break;
+                case RotateType.corner:
+                    xUsed = x1;
+                    yUsed = y1;
+                    break;
+                case RotateType.middle:
+                    xUsed = x1 + x / 2;
+                    yUsed = y1 + y / 2;
+                    break;
             }
 
             cols[index] = CalculatePixelColor(xUsed, yUsed, pattern);

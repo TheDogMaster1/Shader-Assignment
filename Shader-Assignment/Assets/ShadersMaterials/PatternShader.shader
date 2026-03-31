@@ -48,15 +48,17 @@ Shader "CustomRenderTexture/PatternShader"
                 float2 uv = IN.localTexcoord.xy;
                 float PI = 3.14159265f;
 
-                // _Degrees = _Degrees + _Time.y;
-                _Hue = _Hue + _SinTime.y;
-                // if(_Hue > 1){
-                //     _Hue = 0;
-                //     }
+                float4 _texture = tex2D(_MainTex, uv) * _Color;
 
-                // if(_Degrees > 360){
-                //     _Degrees = 0;
-                //     }
+                _Degrees = _Degrees + _Time.y;
+                _Hue = _Hue + _SinTime.y;
+                if(_Hue > 1){
+                    _Hue = 0;
+                    }
+
+                if(_Degrees > 360){
+                    _Degrees = 0;
+                    }
 
                 float u1 = uv.x * cos(radians(_Degrees)) - uv.y * sin(radians(_Degrees));
                 float v1 = uv.x * sin(radians(_Degrees)) + uv.y * cos(radians(_Degrees));
@@ -66,12 +68,13 @@ Shader "CustomRenderTexture/PatternShader"
                 // float4 color = tex2D(_MainTex, u1v1) * _Color;
 
                 // checkerboard
-                // u1 = u1 + uv.x / 2;
-                // v1 = v1 + uv.y / 2;
+                u1 = u1 + 256;
+                v1 = v1 + 256;
                 float4 colorRainbow = float4(myFunction(_Hue, 0), myFunction(_Hue, PI / 3 * 2), myFunction(_Hue, PI / 3 * 4), 1);
                 float4 colorRainbowOffset = float4(myFunction(_Hue + 0.5, 0), myFunction(_Hue + 0.5, PI / 3 * 2), myFunction(_Hue + 0.5, PI / 3 * 4), 1);
                 float4 color = lerp(colorRainbow, colorRainbowOffset, fmod(floor(u1 * 10) + floor(v1 * 10), 2));
 
+                color = color * _texture;
                 //lines but with strange colors
                 // float4 color =lerp(_Color, _Color2, fmod(uv.x + 0.5 * uv.y, _Radius));
 
