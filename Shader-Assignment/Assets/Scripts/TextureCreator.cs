@@ -4,7 +4,7 @@ using UnityEngine;
 public class TextureCreator : MonoBehaviour
 {
     // Add your own pattern types here:
-    public enum PatternType { Noise, NoiseWithGray, None, Mandelbrot, UVS, Stripes, cos, experiment };
+    public enum PatternType { Noise, NoiseWithGray, None, Mandelbrot, UVS, Stripes, cos, experiment, rainbowfunc, rainbow };
 
     public PatternType patternType;
 
@@ -14,6 +14,9 @@ public class TextureCreator : MonoBehaviour
     Color[] cols = null;
 
     public bool rotate = false;
+
+    [Range(0, 1)]
+    public float hue = 0;
 
     [Header("Rotation settings")]
     [Range(0, 360)]
@@ -65,6 +68,23 @@ public class TextureCreator : MonoBehaviour
                 return Color.white * (Mathf.Floor((u * 10) % 2)) * v;
             case PatternType.cos:
                 return new Color(.5f + .5f * Mathf.Cos(2 * Mathf.PI * u), 0, 0, 1);
+            case PatternType.rainbowfunc:
+                Color col = Color.black;
+                if (Myfunction(u, 0) > v)
+                {
+                    col += Color.red;
+                }
+                if (Myfunction(u, Mathf.PI / 3 * 2) > v)
+                {
+                    col += Color.green;
+                }
+                if (Myfunction(u, Mathf.PI / 3 * 4) > v)
+                {
+                    col += Color.blue;
+                }
+                return col;
+            case PatternType.rainbow:
+                return new Color(Myfunction(hue, 0), Myfunction(hue, Mathf.PI / 3 * 2), Myfunction(hue, Mathf.PI / 3 * 4), 1);
             case PatternType.experiment:
                 return Color.white * ((Mathf.Floor(u * 10) + Mathf.Floor(v * 10)) % 2);
             //return Color.white * (.5f + .5f * Mathf.Cos(2 * Mathf.PI * (u / SIZE - 1) + Mathf.PI)) * (.5f + .5f * Mathf.Cos(2 * Mathf.PI * (v / SIZE - 1) + Mathf.PI));
@@ -73,6 +93,11 @@ public class TextureCreator : MonoBehaviour
         }
     }
 
+    private float Myfunction(float u, float offset)
+    {
+        float y = 0.5f * Mathf.Cos(2 * Mathf.PI * u + offset) + .5f;
+        return y;
+    }
     /// <summary>
     /// Draws a pattern given by the [pattern] number to the [cols] array, which
     /// should have size [width] * [height].
