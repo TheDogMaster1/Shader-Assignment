@@ -78,19 +78,19 @@ namespace Handout
                 builder.AddTriangle(v12, v11, v10);
 
                 //bottom
-                int v13 = builder.AddVertex(offset + vec1);
-                int v14 = builder.AddVertex(offset + vec2);
-                int v15 = builder.AddVertex(offset + vec5);
-                int v16 = builder.AddVertex(offset + vec6);
+                int v13 = builder.AddVertex(offset + vec1, new Vector2(1, 0));
+                int v14 = builder.AddVertex(offset + vec2, new Vector2(0, 0));
+                int v15 = builder.AddVertex(offset + vec5, new Vector2(1, 0.2f));
+                int v16 = builder.AddVertex(offset + vec6, new Vector2(0, 1));
 
                 builder.AddTriangle(v13, v14, v15);
                 builder.AddTriangle(v16, v15, v14);
 
                 //right
-                int v17 = builder.AddVertex(offset + vec2);
-                int v18 = builder.AddVertex(offset + vec6);
-                int v19 = builder.AddVertex(offset + vec4);
-                int v20 = builder.AddVertex(offset + vec8);
+                int v17 = builder.AddVertex(offset + vec2, new Vector2(0, 0));
+                int v18 = builder.AddVertex(offset + vec6, new Vector2(0.5f, 0));
+                int v19 = builder.AddVertex(offset + vec4, new Vector2(0, 0.5f));
+                int v20 = builder.AddVertex(offset + vec8, new Vector2(0.5f, 0.5f));
 
                 builder.AddTriangle(v17, v19, v18);
                 builder.AddTriangle(v20, v18, v19);
