@@ -50,15 +50,16 @@ Shader "CustomRenderTexture/PatternShader"
 
                 float4 _texture = tex2D(_MainTex, uv) * _Color;
 
-                _Degrees = _Degrees + _Time.y;
-                _Hue = _Hue + _SinTime.y;
-                if(_Hue > 1){
-                    _Hue = 0;
-                    }
 
-                if(_Degrees > 360){
-                    _Degrees = 0;
-                    }
+                // _Degrees = _Degrees + _Time.y;
+                // _Hue = _Hue + _SinTime.y;
+                // if(_Hue > 1){
+                //     _Hue = 0;
+                //     }
+
+                // if(_Degrees > 360){
+                //     _Degrees = 0;
+                //     }
 
                 float u1 = uv.x * cos(radians(_Degrees)) - uv.y * sin(radians(_Degrees));
                 float v1 = uv.x * sin(radians(_Degrees)) + uv.y * cos(radians(_Degrees));
@@ -75,6 +76,8 @@ Shader "CustomRenderTexture/PatternShader"
                 float4 color = lerp(colorRainbow, colorRainbowOffset, fmod(floor(u1 * 10) + floor(v1 * 10), 2));
 
                 color = color * _texture;
+                
+                
                 //lines but with strange colors
                 // float4 color =lerp(_Color, _Color2, fmod(uv.x + 0.5 * uv.y, _Radius));
 
@@ -86,6 +89,8 @@ Shader "CustomRenderTexture/PatternShader"
                 //     color = _InsideColor;
                 //     }
                 // float4 color = _Radius * _Color;
+
+
 				return color;
             }
             ENDCG
