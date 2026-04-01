@@ -34,6 +34,7 @@ public class TextureCreator : MonoBehaviour
     public float vMultiplier = 1.0f;
 
     public float colorAdder = 0.5f;
+    public float colorSubract = 0.5f;
     void Start()
     {
         // Create a texture and pass it to the material of this game object's renderer:
@@ -58,9 +59,10 @@ public class TextureCreator : MonoBehaviour
                 return Random.value * Color.white;
             case PatternType.NoiseWithGray:
                 float noisefloat = Mathf.PerlinNoise(u * uMultiplier, v * vMultiplier);
-                if (noisefloat < 0.5f) noisefloat += colorAdder;
-                //else noisefloat -= colorAdder;
-                Color noise = noisefloat * noiseColor;
+                Color noise = noiseColor;
+                if (noisefloat < 1) noisefloat += colorAdder;
+                else noisefloat -= colorSubract;
+                noise = noisefloat * noiseColor;
                 return noise;
             case PatternType.Mandelbrot:
                 return Mandelbrot(3 * (u - 0.75f), 3 * (v - 0.5f));

@@ -51,28 +51,28 @@ namespace Handout
                 vec8 = RotateVector(vec8);
 
                 //front
-                int v1 = builder.AddVertex(offset + vec1);
-                int v2 = builder.AddVertex(offset + vec2);
-                int v3 = builder.AddVertex(offset + vec3);
-                int v4 = builder.AddVertex(offset + vec4);
+                int v1 = builder.AddVertex(offset + vec1, new Vector2(0, 0));
+                int v2 = builder.AddVertex(offset + vec2, new Vector2(1, 0));
+                int v3 = builder.AddVertex(offset + vec3, new Vector2(0, 0.5f));
+                int v4 = builder.AddVertex(offset + vec4, new Vector2(1, 0.5f));
 
                 builder.AddTriangle(v1, v3, v2);
                 builder.AddTriangle(v4, v2, v3);
 
                 //top
-                int v5 = builder.AddVertex(offset + vec3);
-                int v6 = builder.AddVertex(offset + vec4);
-                int v7 = builder.AddVertex(offset + vec7);
-                int v8 = builder.AddVertex(offset + vec8);
+                int v5 = builder.AddVertex(offset + vec3, new Vector2(0, 0));
+                int v6 = builder.AddVertex(offset + vec4, new Vector2(1, 0));
+                int v7 = builder.AddVertex(offset + vec7, new Vector2(0, 0.2f));
+                int v8 = builder.AddVertex(offset + vec8, new Vector2(1, 1));
 
                 builder.AddTriangle(v5, v7, v6);
                 builder.AddTriangle(v8, v6, v7);
 
                 //back
-                int v9 = builder.AddVertex(offset + vec5);
-                int v10 = builder.AddVertex(offset + vec6);
-                int v11 = builder.AddVertex(offset + vec7);
-                int v12 = builder.AddVertex(offset + vec8);
+                int v9 = builder.AddVertex(offset + vec5, new Vector2(1, 0));
+                int v10 = builder.AddVertex(offset + vec6, new Vector2(0, 0));
+                int v11 = builder.AddVertex(offset + vec7, new Vector2(1, 0.5f));
+                int v12 = builder.AddVertex(offset + vec8, new Vector2(0, 0.5f));
 
                 builder.AddTriangle(v9, v10, v11);
                 builder.AddTriangle(v12, v11, v10);
