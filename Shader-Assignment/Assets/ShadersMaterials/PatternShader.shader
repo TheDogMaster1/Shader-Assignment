@@ -52,10 +52,10 @@ Shader "CustomRenderTexture/PatternShader"
 
 
                 // _Degrees = _Degrees + _Time.y;
-                // _Hue = _Hue + _SinTime.y;
-                // if(_Hue > 1){
-                //     _Hue = 0;
-                //     }
+                _Hue = _Hue + _SinTime.y;
+                if(_Hue > 1){
+                    _Hue = 0;
+                    }
 
                 // if(_Degrees > 360){
                 //     _Degrees = 0;

@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ShadersMaterials\DefaultShader.shader" />
+    <None Include="Assets\ShadersMaterials\Heart.shader" />
     <None Include="Assets\ShadersMaterials\PatternShader.shader" />
     <None Include="Assets\ShadersMaterials\Mandelbrot.shader" />
   </ItemGroup>

@@ -60,7 +60,7 @@ public class TextureCreator : MonoBehaviour
             case PatternType.NoiseWithGray:
                 float noisefloat = Mathf.PerlinNoise(u * uMultiplier, v * vMultiplier);
                 Color noise = noiseColor;
-                if (noisefloat < 1) noisefloat += colorAdder;
+                if (noisefloat < .5f) noisefloat += colorAdder;
                 else noisefloat -= colorSubract;
                 noise = noisefloat * noiseColor;
                 return noise;
