@@ -9,6 +9,7 @@ Shader "CustomRenderTexture/PatternShader"
         _Degrees("Degrees", Range(0, 360)) = 0 
         _Speed("Speed", float) = 1
         _Hue("Hue", Range(0, 1)) = 0
+        _ShaderNums("ShaderNums", Integer) = 0
         // _OutsideColor("Outside Color", Color) = (0, 0, 0, 1)
         // _InsideColor("Inside Color", Color) = (1, 1, 0, 1)
 	}
@@ -34,6 +35,7 @@ Shader "CustomRenderTexture/PatternShader"
             float       _Degrees;
             float       _Speed;
             float       _Hue;
+            int         _ShaderNums;
             // float4      _OutsideColor;
             // float4      _InsideColor;
 
@@ -50,8 +52,14 @@ Shader "CustomRenderTexture/PatternShader"
 
                 float4 _texture = tex2D(_MainTex, uv) * _Color;
 
+                float4 color = _Color;
 
+                switch (_ShaderNums){
+                    default:
+                    color = _texture;
+                    break;
                 // _Degrees = _Degrees + _Time.y;
+                case 1:
                 _Hue = _Hue + _SinTime.y;
                 if(_Hue > 1){
                     _Hue = 0;
@@ -73,24 +81,16 @@ Shader "CustomRenderTexture/PatternShader"
                 v1 = v1 + 256;
                 float4 colorRainbow = float4(myFunction(_Hue, 0), myFunction(_Hue, PI / 3 * 2), myFunction(_Hue, PI / 3 * 4), 1);
                 float4 colorRainbowOffset = float4(myFunction(_Hue + 0.5, 0), myFunction(_Hue + 0.5, PI / 3 * 2), myFunction(_Hue + 0.5, PI / 3 * 4), 1);
-                float4 color = lerp(colorRainbow, colorRainbowOffset, fmod(floor(u1 * 10) + floor(v1 * 10), 2));
+                color = lerp(colorRainbow, colorRainbowOffset, fmod(floor(u1 * 10) + floor(v1 * 10), 2));
 
                 color = color * _texture;
+                break;
                 
-                
-                //lines but with strange colors
-                // float4 color =lerp(_Color, _Color2, fmod(uv.x + 0.5 * uv.y, _Radius));
+                case 2:
 
-                // circle
-                // if(length(uv - float2(0.5, 0.5)) > _Radius){
-                //     color = _OutsideColor;
-                //     }
-                // else {
-                //     color = _InsideColor;
-                //     }
-                // float4 color = _Radius * _Color;
+                break;
 
-
+                }
 				return color;
             }
             ENDCG
