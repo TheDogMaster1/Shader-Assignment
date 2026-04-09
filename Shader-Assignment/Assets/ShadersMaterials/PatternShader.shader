@@ -87,6 +87,29 @@ Shader "CustomRenderTexture/PatternShader"
                 break;
                 
                 case 2:
+                float c1 = length((uv - 0.5) * 1.5);
+                float dist = pow(c1, 2);
+                float ring = abs(dist - 0.35);
+                if (ring < .1){
+                    color = _Color;
+                    }
+                else{
+                    color = _texture;
+                    }
+                break;
+
+                case 3:
+                float distance = length(uv - 0.5);
+                float strength = -256 * pow(distance - 0.25, 2) + 1;
+                if(strength < 0){
+                    strength = 0;
+                    }
+                if(distance < 0.5){
+                    color = _Color2 * strength;
+                    }
+                else{
+                    color = _texture;
+                    }
 
                 break;
 
