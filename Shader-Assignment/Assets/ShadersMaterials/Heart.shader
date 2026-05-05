@@ -39,6 +39,22 @@ Shader "CustomRenderTexture/Heart"
             {
                 float2 uv = IN.localTexcoord.xy;
                 float4 color = tex2D(_MainTex, uv) * float4(1, 1, 1, 1);
+                float sizeChanger = 0.01 * sin(_Time.y);
+                float xMove = .05 * sin(_Time.y * 5);
+                
+                float2 dir = float2(0.5, 0.5) - uv;
+                float2 dirNormal = float2(dir.y, -dir.x);
+
+                _Size += sizeChanger;
+                _Size2 += sizeChanger;
+                _Size3 += sizeChanger;
+
+                // uv.x -= _Time.y / 2000; 
+                // uv.y -= _Time.y ;
+                // uv -= (pow(uv.x - 0.5, 2) + pow(uv.y - 0.5, 2)) * .01 * _Time.y;
+
+                uv.x += xMove;
+                uv.y -= fmod(_Time.y / 2, 2) - 1;
 
                 if(abs(uv.x - _Center.x) + abs(uv.y - _Center.y) < _Size || 
                 length(uv - float2(_Center.x + _Size / 2, _Center.y + _Size / 2)) < sqrt(pow(_Size, 2) + pow(_Size, 2)) / 2 || 
