@@ -3,17 +3,22 @@ Shader "Unlit/Waves"
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
+		_BaseColor("Base Color", Color) = (1, 1, 1, 1)
 		_WaveMult("WaveMult", float) = 1
 		_TimeMult("TimeMult", float) = 1
 		_Height("Height", float) = 1
 	}
 	SubShader
 	{
-		Tags { "RenderType" = "Opaque" }
+		Tags { "RenderType" = "Transparent"
+		"Queue" = "Transparent"
+		}
 		LOD 100
 
 		Pass
 		{
+			Blend SrcAlpha OneMinusSrcAlpha
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -34,6 +39,7 @@ Shader "Unlit/Waves"
 			};
 
 			sampler2D _MainTex;
+			float4	_BaseColor;
 			float	_WaveMult;
 			float	_TimeMult;
 			float	_Height;
@@ -41,13 +47,10 @@ Shader "Unlit/Waves"
 			v2f vert(appdata v)
 			{
 				v2f o;
-				// TODO:
-				//  -move the vertex up and down in a wave pattern
 				float2 muv = v.uv;
 				muv.x += _Time.y * _TimeMult;
-				// muv.y += _Time.y * _TimeMult;
-				v.vertex.y += _Height * sin((muv.x + muv.y) * _WaveMult);
-				// v.vertex.y += sin(muv.y * _WaveMult);
+				muv.y += _Time.y * _TimeMult;
+				v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
 				float4 modVertex = v.vertex;
 				o.vertex = UnityObjectToClipPos(modVertex);
 				o.uv = v.uv;
@@ -56,7 +59,7 @@ Shader "Unlit/Waves"
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
+				fixed4 col = tex2D(_MainTex, i.uv) * _BaseColor;
 				return col;
 			}
 			ENDCG
