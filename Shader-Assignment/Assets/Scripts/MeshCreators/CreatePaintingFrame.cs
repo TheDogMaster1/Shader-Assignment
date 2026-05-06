@@ -2,19 +2,25 @@ using UnityEngine;
 
 public class CreateFrame : MonoBehaviour
 {
+    [SerializeField]
+    private float size = 0.5f;
+    [SerializeField]
+    private float height = 0.25f;
+    [SerializeField]
+    private float width = 1f;
     void Start()
     {
         MeshBuilder builder = new MeshBuilder();
 
-        Vector3 vec1 = new Vector3(1, -1, -0.25f);
-        Vector3 vec2 = new Vector3(1, -1.5f, -0.25f);
-        Vector3 vec3 = new Vector3(-1.5f, -1, -0.25f);
-        Vector3 vec4 = new Vector3(-1.5f, -1.5f, -0.25f);
+        Vector3 vec1 = new Vector3(width, -width, -height);
+        Vector3 vec2 = new Vector3(width, -(width + size), -height);
+        Vector3 vec3 = new Vector3(-(width + size), -width, -height);
+        Vector3 vec4 = new Vector3(-(width + size), -(width + size), -height);
 
-        Vector3 vec5 = new Vector3(1, -1, 0.25f);
-        Vector3 vec6 = new Vector3(-1.5f, -1, 0.25f);
-        Vector3 vec7 = new Vector3(1, -1.5f, 0.25f);
-        Vector3 vec8 = new Vector3(-1.5f, -1.5f, 0.25f);
+        Vector3 vec5 = new Vector3(width, -width, height);
+        Vector3 vec6 = new Vector3(-(width + size), -width, height);
+        Vector3 vec7 = new Vector3(width, -(width + size), height);
+        Vector3 vec8 = new Vector3(-(width + size), -(width + size), height);
         for (int i = 0; i < 4; i++)
         {
             //front
