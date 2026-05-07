@@ -5,11 +5,6 @@ public class EyeRotator : MonoBehaviour
     [SerializeField]
     private Transform target;
 
-    private void Start()
-    {
-
-    }
-
     private float Angle(Vector3 v, Vector3 w)
     {
         return Mathf.Acos(Vector3.Dot(v, w) / (v.magnitude * w.magnitude));
@@ -22,25 +17,31 @@ public class EyeRotator : MonoBehaviour
 
         var dirX = dir;
         dirX.y = 0f;
-        //Debug.DrawRay(transform.position, dirX, Color.red);
+        Debug.DrawRay(transform.position, dirX.normalized, Color.red);
 
         var dirY = dir;
         dirY.x = 0f;
-        //Debug.DrawRay(transform.position, dirY, Color.green);
+        dirY.z = Mathf.Abs(dirY.z);
+        Debug.DrawRay(transform.position, dirY.normalized, Color.green);
 
         var lookDirX = transform.forward;
         lookDirX.y = 0f;
-        //Debug.DrawRay(transform.position, lookDirX.normalized, Color.blue);
+        Debug.DrawRay(transform.position, lookDirX.normalized, Color.blue);
 
         var lookdirY = transform.forward;
         lookdirY.x = 0f;
-        //Debug.DrawRay(transform.position, lookdirY.normalized, Color.white);
+        lookdirY.z = Mathf.Abs(lookdirY.z);
+        Debug.DrawRay(transform.position, lookdirY.normalized, Color.white);
 
         var rotDirX = Vector3.Cross(lookDirX, dirX);
         var rotDirY = Vector3.Cross(lookdirY, dirY);
 
-        var angleX = Angle(lookDirX, dirX);
-        var AngleY = Angle(lookdirY, dirY);
+        var angleX = Angle(lookDirX, dirX.normalized);
+        //Debug.Log("AngleX: " + angleX);
+        var AngleY = Angle(lookdirY, dirY.normalized);
+        if (AngleY == float.NaN) AngleY = 0f;
+        Debug.Log(dirY);
+        Debug.Log("AngleY: " + AngleY);
 
         transform.Rotate(Vector3.up, angleX * Mathf.Sign(rotDirX.y) * Mathf.Rad2Deg * Time.deltaTime, Space.World);
         transform.Rotate(Vector3.right, AngleY * Mathf.Sign(rotDirY.x) * Mathf.Rad2Deg * Time.deltaTime);

@@ -77,6 +77,18 @@ Shader "Unlit/Waves"
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.uv = v.uv * 4;
 					break;
+					case 3:
+					v.vertex.y += -(40 * pow((muv.x - 0.5), 2) + 40 * pow((muv.y - 0.5), 2)) + _MonsterHeight;
+					if(v.vertex.y < 0){
+						v.vertex.y = 0;
+						}
+					muv.x += _Time.y * _TimeMult;
+					muv.y += _Time.y * _TimeMult;
+					v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
+					o.vertex = UnityObjectToClipPos(v.vertex);
+					o.uv = v.uv * 4;
+					break;
+
 					}
 				return o;
 			}
