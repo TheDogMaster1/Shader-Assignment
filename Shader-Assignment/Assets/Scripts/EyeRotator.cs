@@ -7,7 +7,7 @@ public class EyeRotator : MonoBehaviour
 
     private float Angle(Vector3 v, Vector3 w)
     {
-        return Mathf.Acos(Vector3.Dot(v, w) / (v.magnitude * w.magnitude));
+        return Mathf.Acos(Vector3.Dot(v, w) / (v.magnitude * w.magnitude)) * Mathf.Rad2Deg;
     }
 
     private void Update()
@@ -24,26 +24,22 @@ public class EyeRotator : MonoBehaviour
         dirY.z = Mathf.Abs(dirY.z);
         Debug.DrawRay(transform.position, dirY.normalized, Color.green);
 
-        var lookDirX = transform.forward;
-        lookDirX.y = 0f;
-        Debug.DrawRay(transform.position, lookDirX.normalized, Color.blue);
+        var rotDirY = Vector3.Cross(Vector3.forward, dirX);
+        var rotDirX = Vector3.Cross(Vector3.forward, dirY);
 
-        var lookdirY = transform.forward;
-        lookdirY.x = 0f;
-        lookdirY.z = Mathf.Abs(lookdirY.z);
-        Debug.DrawRay(transform.position, lookdirY.normalized, Color.white);
+        var angleX = Angle(dir, dirX);
+        var angleY = Angle(Vector3.forward, dirX);
 
-        var rotDirX = Vector3.Cross(lookDirX, dirX);
-        var rotDirY = Vector3.Cross(lookdirY, dirY);
+        Debug.Log("AngleX: " + angleX + " AngleY: " + angleY);
+        Debug.Log("rotDirX: " + rotDirX);
+        if (dirX.magnitude == 0)
+        {
+            transform.rotation = Quaternion.Euler(90f * Mathf.Sign(rotDirX.x), 0, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(angleX * Mathf.Sign(rotDirX.x), angleY * Mathf.Sign(rotDirY.y), 0);
+        }
 
-        var angleX = Angle(lookDirX, dirX.normalized);
-        //Debug.Log("AngleX: " + angleX);
-        var AngleY = Angle(lookdirY, dirY.normalized);
-        if (AngleY == float.NaN) AngleY = 0f;
-        Debug.Log(dirY);
-        Debug.Log("AngleY: " + AngleY);
-
-        transform.Rotate(Vector3.up, angleX * Mathf.Sign(rotDirX.y) * Mathf.Rad2Deg * Time.deltaTime, Space.World);
-        transform.Rotate(Vector3.right, AngleY * Mathf.Sign(rotDirY.x) * Mathf.Rad2Deg * Time.deltaTime);
     }
 }
