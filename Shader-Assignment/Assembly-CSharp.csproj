@@ -64,27 +64,36 @@
     <Compile Include="Assets\Scripts\EyeRotator.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\CreateOctahedron.cs" />
     <Compile Include="Assets\Scripts\MeshModifiers\MeshBreathe.cs" />
+    <Compile Include="Assets\Scripts\MeshCreators\MeshBuilder.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\CreateStairs.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\CreatePaintingFrame.cs" />
+    <Compile Include="Assets\_External_Assets\EYE ADVANCED\Scripts\EyeAdv_AutoDilation.cs" />
     <Compile Include="Assets\Scripts\TextureExporter.cs" />
+    <Compile Include="Assets\_External_Assets\EYE ADVANCED\_DEMO\Scripts\ControllerCamera.cs" />
     <Compile Include="Assets\Scripts\SaveMeshToOBJ.cs" />
     <Compile Include="Assets\Scripts\MeshModifiers\AutoUv.cs" />
     <Compile Include="Assets\Scripts\TextureModifier.cs" />
+    <Compile Include="Assets\_External_Assets\EYE ADVANCED\_DEMO\Scripts\ControllerGUI.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\MeshCreator.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\Scripts\Curve.cs" />
+    <Compile Include="Assets\Scripts\EyeMovement.cs" />
+    <Compile Include="Assets\Scripts\MeshModifiers\Curve.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\Extrude.cs" />
     <Compile Include="Assets\Scripts\TextureCreator.cs" />
-    <Compile Include="Assets\Scripts\MeshBuilder.cs" />
     <Compile Include="Assets\Scripts\MeshModifiers\TextureCycle.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\CreateSpiralStair.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD2.shader" />
     <None Include="Assets\ShadersMaterials\DefaultShader.shader" />
+    <None Include="Assets\_External_Assets\EYE ADVANCED\_SRP\_SRP_ReadMe.txt" />
+    <None Include="Assets\_External_Assets\EYE ADVANCED\_EyeAdvanced_ReadMe.txt" />
+    <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD1.shader" />
     <None Include="Assets\ShadersMaterials\Heart.shader" />
     <None Include="Assets\ShadersMaterials\PatternShader.shader" />
     <None Include="Assets\ShadersMaterials\Waves.shader" />
+    <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD0.shader" />
     <None Include="Assets\ShadersMaterials\Mandelbrot.shader" />
   </ItemGroup>
   <ItemGroup>

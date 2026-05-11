@@ -30,8 +30,6 @@ public class EyeRotator : MonoBehaviour
         var angleX = Angle(dir, dirX);
         var angleY = Angle(Vector3.forward, dirX);
 
-        Debug.Log("AngleX: " + angleX + " AngleY: " + angleY);
-        Debug.Log("rotDirX: " + rotDirX);
         if (dirX.magnitude == 0)
         {
             transform.rotation = Quaternion.Euler(90f * Mathf.Sign(rotDirX.x), 0, 0);

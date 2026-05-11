@@ -3,6 +3,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private float horizontalInput = 0;
+    private float forwardInput = 0;
     private float verticalInput = 0;
     private float verCamAngles = 0;
 
@@ -20,8 +21,17 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        verticalInput = Input.GetAxis("Vertical");
+        forwardInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
+        if (Input.GetKey(KeyCode.Q)) verticalInput -= 1 * 5 * Time.deltaTime;
+        else if (Input.GetKey(KeyCode.E)) verticalInput += 1 * 5 * Time.deltaTime;
+        else
+        {
+            if (verticalInput > -0.05 && verticalInput < 0.05) verticalInput = 0;
+            else verticalInput -= 1 * Mathf.Sign(verticalInput) * Time.deltaTime;
+        }
+        verticalInput = Mathf.Clamp(verticalInput, -1, 1);
+        Debug.Log(verticalInput);
 
         float mouseX = Input.GetAxis("Mouse X") * mouseXSens * Time.deltaTime;
         float mouseY = -Input.GetAxis("Mouse Y") * mouseYSens * Time.deltaTime;
@@ -33,6 +43,9 @@ public class CameraMovement : MonoBehaviour
 
         transform.eulerAngles = new Vector3(verCamAngles, transform.eulerAngles.y, transform.eulerAngles.z);
 
-        transform.position += (transform.right * horizontalInput + transform.forward * verticalInput) * speed * Time.deltaTime;
+        var moveDir = transform.right * horizontalInput + transform.forward * forwardInput + transform.up * verticalInput;
+        moveDir = Vector3.ClampMagnitude(moveDir, 1);
+
+        transform.position += moveDir * speed * Time.deltaTime;
     }
 }
