@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour
             else verticalInput -= 1 * Mathf.Sign(verticalInput) * Time.deltaTime;
         }
         verticalInput = Mathf.Clamp(verticalInput, -1, 1);
-        Debug.Log(verticalInput);
+        //Debug.Log(verticalInput);
 
         float mouseX = Input.GetAxis("Mouse X") * mouseXSens * Time.deltaTime;
         float mouseY = -Input.GetAxis("Mouse Y") * mouseYSens * Time.deltaTime;

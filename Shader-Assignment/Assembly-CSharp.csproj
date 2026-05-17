@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\MeshModifiers\AutoUv.cs" />
     <Compile Include="Assets\Scripts\TextureModifier.cs" />
     <Compile Include="Assets\_External_Assets\EYE ADVANCED\_DEMO\Scripts\ControllerGUI.cs" />
+    <Compile Include="Assets\Scripts\StateChanger.cs" />
     <Compile Include="Assets\Scripts\MeshCreators\MeshCreator.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\EyeMovement.cs" />

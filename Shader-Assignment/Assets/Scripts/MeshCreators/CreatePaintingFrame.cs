@@ -71,9 +71,9 @@ public class CreateFrame : MonoBehaviour
             vec7 = RotateVector(vec7);
             vec8 = RotateVector(vec8);
         }
-        Debug.Log(transform.position);
-        Debug.Log(vec1);
-        Debug.Log(transform.position + vec1);
+        //Debug.Log(transform.position);
+        //Debug.Log(vec1);
+        //Debug.Log(transform.position + vec1);
         GetComponent<MeshFilter>().mesh = builder.CreateMesh();
     }
 
