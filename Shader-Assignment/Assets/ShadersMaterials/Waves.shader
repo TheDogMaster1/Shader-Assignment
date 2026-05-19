@@ -3,7 +3,6 @@ Shader "Unlit/Waves"
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
-		_HeightMap("Height Map", 2D) = "Black" {}
 		_BaseColor("Base Color", Color) = (1, 1, 1, 1)
 		_WaveMult("WaveMult", float) = 1
 		_TimeMult("TimeMult", float) = 1
@@ -46,7 +45,7 @@ Shader "Unlit/Waves"
 			};
 
 			sampler2D _MainTex;
-			sampler2D _HeightMap;
+			float4 _MainTex_TexelSize;
 			float4	_BaseColor;
 			float	_WaveMult;
 			float	_TimeMult;
@@ -77,13 +76,10 @@ Shader "Unlit/Waves"
 					o.uv = v.uv * 4;
 					break;
 					case 2:
-					float4 offset = tex2Dlod(_HeightMap, float4(v.uv, 0, 0));
-						muv.x += _Time.y * _TimeMult;
-					muv.y += _Time.y * _TimeMult;
-					v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
-					v.vertex.y += offset.y * _MonsterHeight;
 					o.vertex = UnityObjectToClipPos(v.vertex);
-					o.uv = v.uv * 4;
+					o.uv = v.uv;
+					o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
+			
 					break;
 					case -1:
 					v.vertex.y += -(40 * pow((muv.x - 0.5), 2) + 40 * pow((muv.y - 0.5), 2)) + _MonsterHeight;
@@ -102,8 +98,29 @@ Shader "Unlit/Waves"
 				return o;
 			}
 
+			float differentUVCalc(float x, float y){
+				float pos = 1;
+				if(_ShaderNums == -1){
+				pos += -(40 * pow((x - 0.5), 2) + 40 * pow((y - 0.5), 2)) + _MonsterHeight;
+					if(pos < 0){
+						pos = 0;
+					}
+				}
+				x += _Time.y * _TimeMult;
+				y += _Time.y * _TimeMult;
+					pos += _Height * sin((x + y * .5) * _WaveMult);
+
+					return pos;
+				}
+
 			fixed4 frag(v2f i) : SV_Target
 			{
+				float difUp = differentUVCalc(i.uv.x, i.uv.y + _MainTex_TexelSize.y);
+				float difDown= differentUVCalc(i.uv.x, i.uv.y - _MainTex_TexelSize.y);
+				float difRight = differentUVCalc(i.uv.x + _MainTex_TexelSize.x, i.uv.y);
+				float difLeft = differentUVCalc(i.uv.x + _MainTex_TexelSize.x, i.uv.y);
+
+
 				float diffuse = max(dot(i.normal, normalize(_WorldSpaceLightPos0)), 0);
 
 				// float4 reflection = _WorldSpaceLightPos0 - 2 * (_WorldSpaceLightPos0 * i.normal) * i.normal;
@@ -116,7 +133,7 @@ Shader "Unlit/Waves"
 
 				float4 ambientLight = _AI * _AmbientColor;
 
-				float4 col = (ambientLight + diffuse * _LightColor0) * albedo + Sf * _SI * _LightColor0;
+				float4 col = (ambientLight + diffuse * _LightColor0) * albedo;
 				return col;
 			}
 			ENDCG
