@@ -10,12 +10,14 @@ Shader "Unlit/Waves"
 		_Height("Height", float) = 1
 		_MonsterHeight("Monster Height", float) = 1
 		_ShaderNums("Shadernums", Integer) = 0
+		_AmbientColor("Ambient Color", Color) = (1, 1, 1, 1)
+		_AI("Ambient Intensity", float) = 0.1
+		_Smoothness("Smoothness", float) = 1
+		_SI("Specular Intensity", float) = 1
 	}
 	SubShader
 	{
-		Tags { "RenderType" = "Transparent"
-		"Queue" = "Transparent"
-		}
+		Tags { "RenderType" = "Opaque" }
 		LOD 100
 
 		Pass
@@ -27,6 +29,7 @@ Shader "Unlit/Waves"
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
+			#include "UnityLightingCommon.cginc"
 
 			struct appdata
 			{
@@ -39,6 +42,7 @@ Shader "Unlit/Waves"
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				float4 normal : NORMAL;
 			};
 
 			sampler2D _MainTex;
@@ -49,6 +53,10 @@ Shader "Unlit/Waves"
 			float	_Height;
 			float	_MonsterHeight;
 			int		_ShaderNums;
+			float4	_AmbientColor;
+			float	_AI;
+			float	_Smoothness;
+			float	_SI;
 
 			v2f vert(appdata v)
 			{
@@ -90,14 +98,47 @@ Shader "Unlit/Waves"
 					break;
 
 					}
+					o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv) * _BaseColor;
+				float diffuse = max(dot(i.normal, normalize(_WorldSpaceLightPos0)), 0);
+
+				// float4 reflection = _WorldSpaceLightPos0 - 2 * (_WorldSpaceLightPos0 * i.normal) * i.normal;
+
+				float4 reflection = reflect(normalize(_WorldSpaceLightPos0), i.normal);
+
+				float Sf = pow(max(dot(normalize(i.normal - _WorldSpaceCameraPos), reflection), 0), _Smoothness);
+
+				fixed4 albedo = tex2D(_MainTex, i.uv);
+
+				float4 ambientLight = _AI * _AmbientColor;
+
+				float4 col = (ambientLight + diffuse * _LightColor0) * albedo + Sf * _SI * _LightColor0;
 				return col;
 			}
+			ENDCG
+		}
+
+		Pass
+		{
+			Tags{ "LightMode" = "ShadowCaster" }
+			CGPROGRAM
+			#pragma vertex VSMain
+			#pragma fragment PSMain
+
+			float4 VSMain(float4 vertex:POSITION) : SV_POSITION
+			{
+				return UnityObjectToClipPos(vertex);
+			}
+
+			float4 PSMain(float4 vertex:SV_POSITION) : SV_TARGET
+			{
+				return 0;
+			}
+
 			ENDCG
 		}
 	}
