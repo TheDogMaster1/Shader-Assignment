@@ -14,7 +14,7 @@ public class StateChanger : MonoBehaviour
     [SerializeField]
     private GameObject eyes;
     [SerializeField]
-    private Material wave;
+    private Material[] shaders;
     [SerializeField]
     private GameObject pointLight;
 
@@ -37,8 +37,11 @@ public class StateChanger : MonoBehaviour
     {
         isDark = !isDark;
         eyes.SetActive(!eyes.activeSelf);
-        var shaderNum = wave.GetInteger("_ShaderNums");
-        wave.SetInteger("_ShaderNums", shaderNum * -1);
+        foreach (var shader in shaders)
+        {
+            var shaderNum = shader.GetInteger("_ShaderNums");
+            shader.SetInteger("_ShaderNums", shaderNum * -1);
+        }
         StateChangeTime = Random.Range(20, 30);
         timer = 0;
     }
@@ -60,6 +63,9 @@ public class StateChanger : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        wave.SetInteger("_ShaderNums", 1);
+        foreach (var shader in shaders)
+        {
+            shader.SetInteger("_ShaderNums", 1);
+        }
     }
 }

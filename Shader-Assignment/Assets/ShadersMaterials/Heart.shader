@@ -4,6 +4,7 @@ Shader "CustomRenderTexture/Heart"
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex("InputTex", 2D) = "white" {}
+        _ShaderNums("ShaderNums", integer) = 1
         _Center("HeartCenter", Vector) = (0, 0, 0, 0)
         _Size("Size", Range(0, 1)) = .5
         _Center2("HeartCenter2", Vector) = (0, 0 , 0, 0)
@@ -28,6 +29,7 @@ Shader "CustomRenderTexture/Heart"
 
             float4      _Color;
             sampler2D   _MainTex;
+            int         _ShaderNums;
             float4      _Center;
             float       _Size;
             float4      _Center2;
@@ -56,22 +58,29 @@ Shader "CustomRenderTexture/Heart"
                 uv.x += xMove;
                 uv.y -= fmod(_Time.y / 2, 2) - 1;
 
-                if(abs(uv.x - _Center.x) + abs(uv.y - _Center.y) < _Size || 
-                length(uv - float2(_Center.x + _Size / 2, _Center.y + _Size / 2)) < sqrt(pow(_Size, 2) + pow(_Size, 2)) / 2 || 
-                length(uv - float2(_Center.x - _Size / 2, _Center.y + _Size / 2)) < sqrt(pow(_Size, 2) + pow(_Size, 2)) / 2){
-                    color = _Color;
-                }
+                if (_ShaderNums == 1){
+                    if(abs(uv.x - _Center.x) + abs(uv.y - _Center.y) < _Size || 
+                    length(uv - float2(_Center.x + _Size / 2, _Center.y + _Size / 2)) < sqrt(pow(_Size, 2) + pow(_Size, 2)) / 2 || 
+                    length(uv - float2(_Center.x - _Size / 2, _Center.y + _Size / 2)) < sqrt(pow(_Size, 2) + pow(_Size, 2)) / 2){
+                        color = _Color;
+                    }
 
-                if(abs(uv.x - _Center2.x) + abs(uv.y - _Center2.y) < _Size2 || 
-                length(uv - float2(_Center2.x + _Size2 / 2, _Center2.y + _Size2 / 2)) < sqrt(pow(_Size2, 2) + pow(_Size2, 2)) / 2 || 
-                length(uv - float2(_Center2.x - _Size2 / 2, _Center2.y + _Size2 / 2)) < sqrt(pow(_Size2, 2) + pow(_Size2, 2)) / 2){
-                    color = _Color;
-                }
+                    if(abs(uv.x - _Center2.x) + abs(uv.y - _Center2.y) < _Size2 || 
+                    length(uv - float2(_Center2.x + _Size2 / 2, _Center2.y + _Size2 / 2)) < sqrt(pow(_Size2, 2) + pow(_Size2, 2)) / 2 || 
+                    length(uv - float2(_Center2.x - _Size2 / 2, _Center2.y + _Size2 / 2)) < sqrt(pow(_Size2, 2) + pow(_Size2, 2)) / 2){
+                        color = _Color;
+                    }
                    
-                if(abs(uv.x - _Center3.x) + abs(uv.y - _Center3.y) < _Size3 || 
-                length(uv - float2(_Center3.x + _Size3 / 2, _Center3.y + _Size3 / 2)) < sqrt(pow(_Size3, 2) + pow(_Size3, 2)) / 2 || 
-                length(uv - float2(_Center3.x - _Size3 / 2, _Center3.y + _Size3 / 2)) < sqrt(pow(_Size3, 2) + pow(_Size3, 2)) / 2){
-                    color = _Color;
+                    if(abs(uv.x - _Center3.x) + abs(uv.y - _Center3.y) < _Size3 || 
+                    length(uv - float2(_Center3.x + _Size3 / 2, _Center3.y + _Size3 / 2)) < sqrt(pow(_Size3, 2) + pow(_Size3, 2)) / 2 || 
+                    length(uv - float2(_Center3.x - _Size3 / 2, _Center3.y + _Size3 / 2)) < sqrt(pow(_Size3, 2) + pow(_Size3, 2)) / 2){
+                        color = _Color;
+                    }
+                }
+                else{
+                   float averageColor = (color.x + color.y + color.z) / 3;
+
+                   color = float4(averageColor, averageColor, averageColor, color.a);
                 }
 
                 return color;

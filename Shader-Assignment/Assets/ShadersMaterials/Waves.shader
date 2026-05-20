@@ -3,6 +3,7 @@ Shader "Unlit/Waves"
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
+		_HeightMap("HeightMap", 2D) = "black" {}
 		_BaseColor("Base Color", Color) = (1, 1, 1, 1)
 		_WaveMult("WaveMult", float) = 1
 		_TimeMult("TimeMult", float) = 1
@@ -11,8 +12,8 @@ Shader "Unlit/Waves"
 		_ShaderNums("Shadernums", Integer) = 0
 		_AmbientColor("Ambient Color", Color) = (1, 1, 1, 1)
 		_AI("Ambient Intensity", float) = 0.1
-		_Smoothness("Smoothness", float) = 1
-		_SI("Specular Intensity", float) = 1
+		_PixelSampleDistance ("Pixel Sample Distance", float) = 1
+		_difStrength ("Difference Strength", float) = 1
 	}
 	SubShader
 	{
@@ -21,7 +22,6 @@ Shader "Unlit/Waves"
 
 		Pass
 		{
-			Blend SrcAlpha OneMinusSrcAlpha
 
 			CGPROGRAM
 			#pragma vertex vert
@@ -45,7 +45,9 @@ Shader "Unlit/Waves"
 			};
 
 			sampler2D _MainTex;
-			float4 _MainTex_TexelSize;
+			sampler2D _HeightMap;
+			float4	_Height_ST;
+			float4	 _HeightMap_TexelSize;
 			float4	_BaseColor;
 			float	_WaveMult;
 			float	_TimeMult;
@@ -54,8 +56,8 @@ Shader "Unlit/Waves"
 			int		_ShaderNums;
 			float4	_AmbientColor;
 			float	_AI;
-			float	_Smoothness;
-			float	_SI;
+			float	_PixelSampleDistance;
+			float	_difStrength;
 
 			v2f vert(appdata v)
 			{
@@ -78,19 +80,16 @@ Shader "Unlit/Waves"
 					case 2:
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.uv = v.uv;
-					o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
 			
 					break;
 					case -1:
-					v.vertex.y += -(40 * pow((muv.x - 0.5), 2) + 40 * pow((muv.y - 0.5), 2)) + _MonsterHeight;
-					if(v.vertex.y < 0){
-						v.vertex.y = 0;
-						}
-					muv.x += _Time.y * _TimeMult;
+					float4 offset = tex2Dlod(_HeightMap, float4(v.uv, 0, 0));
+					v.vertex.y += offset.y * _MonsterHeight;
+						muv.x += _Time.y * _TimeMult;
 					muv.y += _Time.y * _TimeMult;
 					v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
 					o.vertex = UnityObjectToClipPos(v.vertex);
-					o.uv = v.uv * 4;
+					o.uv = v.uv;
 					break;
 
 					}
@@ -98,42 +97,32 @@ Shader "Unlit/Waves"
 				return o;
 			}
 
-			float differentUVCalc(float x, float y){
-				float pos = 1;
-				if(_ShaderNums == -1){
-				pos += -(40 * pow((x - 0.5), 2) + 40 * pow((y - 0.5), 2)) + _MonsterHeight;
-					if(pos < 0){
-						pos = 0;
-					}
-				}
-				x += _Time.y * _TimeMult;
-				y += _Time.y * _TimeMult;
-					pos += _Height * sin((x + y * .5) * _WaveMult);
-
-					return pos;
-				}
-
 			fixed4 frag(v2f i) : SV_Target
 			{
-				float difUp = differentUVCalc(i.uv.x, i.uv.y + _MainTex_TexelSize.y);
-				float difDown= differentUVCalc(i.uv.x, i.uv.y - _MainTex_TexelSize.y);
-				float difRight = differentUVCalc(i.uv.x + _MainTex_TexelSize.x, i.uv.y);
-				float difLeft = differentUVCalc(i.uv.x + _MainTex_TexelSize.x, i.uv.y);
+				float4 colUp = tex2D(_HeightMap, float2(i.uv.x, i.uv.y + _HeightMap_TexelSize.y * _PixelSampleDistance));
+                float4 colDown = tex2D(_HeightMap, float2(i.uv.x, i.uv.y - _HeightMap_TexelSize.y * _PixelSampleDistance));
+                float4 colRight = tex2D(_HeightMap, float2(i.uv.x  +  _HeightMap_TexelSize.x * _PixelSampleDistance, i.uv.y));
+                float4 colLeft = tex2D(_HeightMap, float2(i.uv.x  - _HeightMap_TexelSize.x  * _PixelSampleDistance, i.uv.y));
 
+                float3 horizontalIncrease = float3(1, 0, (colRight.x - colLeft.x) * _difStrength);
+                float3 verticalIncrease = float3(0, 1, (colUp.x - colDown.x) * _difStrength);
+                float3 normalVector = normalize(cross(horizontalIncrease, verticalIncrease));
+				float3 usedNormal = float3(1, 1, 1);
+				if(_ShaderNums == -1){
+					usedNormal = float3(normalVector.x, -normalVector.z, normalVector.y);
+					i.uv *= 4;
+				}
+				else{
+					usedNormal = float3 (0, -1, 0);
+				}
 
-				float diffuse = max(dot(i.normal, normalize(_WorldSpaceLightPos0)), 0);
-
-				// float4 reflection = _WorldSpaceLightPos0 - 2 * (_WorldSpaceLightPos0 * i.normal) * i.normal;
-
-				float4 reflection = reflect(normalize(_WorldSpaceLightPos0), i.normal);
-
-				float Sf = pow(max(dot(normalize(i.normal - _WorldSpaceCameraPos), reflection), 0), _Smoothness);
+				float diffuse = max(dot(float4(-usedNormal, 1), normalize(_WorldSpaceLightPos0)), 0);
 
 				fixed4 albedo = tex2D(_MainTex, i.uv);
 
 				float4 ambientLight = _AI * _AmbientColor;
 
-				float4 col = (ambientLight + diffuse * _LightColor0) * albedo;
+				float4 col = (ambientLight + diffuse * float4(1, 1, 1, 1)) * albedo;
 				return col;
 			}
 			ENDCG
