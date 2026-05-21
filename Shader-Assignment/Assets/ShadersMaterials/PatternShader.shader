@@ -112,6 +112,10 @@ Shader "CustomRenderTexture/PatternShader"
                     }
 
                 break;
+                case -1:
+                float4 texColor = tex2D(_MainTex, uv);
+                color = float4(1 - texColor.r, 1 - texColor.g, 1 - texColor.b, texColor.a);
+                break;
 
                 }
 				return color;

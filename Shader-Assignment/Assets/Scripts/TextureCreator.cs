@@ -35,6 +35,8 @@ public class TextureCreator : MonoBehaviour
 
     public float colorAdder = 0.5f;
     public float colorSubract = 0.5f;
+
+    public bool isdark;
     void Start()
     {
         // Create a texture and pass it to the material of this game object's renderer:
@@ -59,15 +61,21 @@ public class TextureCreator : MonoBehaviour
                 return Random.value * Color.white;
             case PatternType.NoiseWithGray:
                 float noisefloat = Mathf.PerlinNoise(u * uMultiplier, v * vMultiplier);
-                Color noise = noiseColor;
                 if (noisefloat < .5f) noisefloat += colorAdder;
                 else noisefloat -= colorSubract;
-                noise = noisefloat * noiseColor;
+                Color noise = noisefloat * noiseColor;
                 return noise;
             case PatternType.Mandelbrot:
                 return Mandelbrot(3 * (u - 0.75f), 3 * (v - 0.5f));
             case PatternType.UVS:
-                return new Color(u, v, 0, 1);
+                if (isdark)
+                {
+                    return new Color(1 - u, 1 - v, 1, 1);
+                }
+                else
+                {
+                    return new Color(u, v, 0, 1);
+                }
             case PatternType.Stripes:
                 return Color.white * (Mathf.Floor((u * 10) % 2));
             case PatternType.cos:
@@ -151,7 +159,7 @@ public class TextureCreator : MonoBehaviour
         }
     }
 
-    void Draw()
+    public void Draw()
     {
         if (cols == null)
         {

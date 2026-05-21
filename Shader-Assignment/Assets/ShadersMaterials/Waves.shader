@@ -93,7 +93,8 @@ Shader "Unlit/Waves"
 					break;
 
 					}
-					o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
+					// o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
+					o.normal = v.normal;
 				return o;
 			}
 

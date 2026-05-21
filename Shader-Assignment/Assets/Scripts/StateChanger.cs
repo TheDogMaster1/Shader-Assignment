@@ -12,11 +12,15 @@ public class StateChanger : MonoBehaviour
     private int flickerAmount;
 
     [SerializeField]
-    private GameObject eyes;
+    private GameObject[] appearingObj;
     [SerializeField]
     private Material[] shaders;
     [SerializeField]
     private GameObject pointLight;
+    [SerializeField]
+    private TextureCreator painting1;
+    [SerializeField]
+    private TextureCreator painting2;
 
     void Start()
     {
@@ -29,6 +33,8 @@ public class StateChanger : MonoBehaviour
 
         if (timer > StateChangeTime || Input.GetKeyDown(KeyCode.Space))
         {
+            timer = 0;
+            StateChangeTime = Random.Range(20, 30);
             StartCoroutine(FlickerLight());
         }
     }
@@ -36,14 +42,31 @@ public class StateChanger : MonoBehaviour
     private void ChangeState()
     {
         isDark = !isDark;
-        eyes.SetActive(!eyes.activeSelf);
+        foreach (var obj in appearingObj)
+        {
+            obj.SetActive(!obj.activeSelf);
+        }
         foreach (var shader in shaders)
         {
             var shaderNum = shader.GetInteger("_ShaderNums");
             shader.SetInteger("_ShaderNums", shaderNum * -1);
         }
-        StateChangeTime = Random.Range(20, 30);
-        timer = 0;
+        painting1.isdark = isDark;
+        painting1.Draw();
+
+        if (isDark)
+        {
+            painting2.patternType = TextureCreator.PatternType.experiment;
+            painting2.rotateType = TextureCreator.RotateType.middle;
+            painting2.degrees = Random.Range(0, 360);
+            painting2.Draw();
+        }
+        else
+        {
+            painting2.patternType = TextureCreator.PatternType.rainbowfunc;
+            painting2.rotateType = TextureCreator.RotateType.none;
+            painting2.Draw();
+        }
     }
 
     private IEnumerator FlickerLight()
