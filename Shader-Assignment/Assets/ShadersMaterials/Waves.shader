@@ -93,7 +93,7 @@ Shader "Unlit/Waves"
 					break;
 
 					}
-					// o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.normal.xyz, 0)));
+					// o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.vertex.xyz, 0)));
 					o.normal = v.normal;
 				return o;
 			}
@@ -136,9 +136,37 @@ Shader "Unlit/Waves"
 			#pragma vertex VSMain
 			#pragma fragment PSMain
 
-			float4 VSMain(float4 vertex:POSITION) : SV_POSITION
+				struct appdata
 			{
-				return UnityObjectToClipPos(vertex);
+				float4 vertex : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			sampler2D _HeightMap;
+			float	_WaveMult;
+			float	_TimeMult;
+			float	_Height;
+			float	_MonsterHeight;
+			int		_ShaderNums;
+
+			float4 VSMain(appdata v) : SV_POSITION
+			{
+				float2 muv = v.uv;
+				switch (_ShaderNums){
+					case 1:
+					muv.x += _Time.y * _TimeMult;
+					muv.y += _Time.y * _TimeMult;
+					v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
+					break;
+					case -1:
+					float4 offset = tex2Dlod(_HeightMap, float4(v.uv, 0, 0));
+					v.vertex.y += offset.y * _MonsterHeight;
+					muv.x += _Time.y * _TimeMult;
+					muv.y += _Time.y * _TimeMult;
+					v.vertex.y += _Height * sin((muv.x + muv.y * .5) * _WaveMult);
+					break;
+					}
+				return UnityObjectToClipPos(v.vertex);
 			}
 
 			float4 PSMain(float4 vertex:SV_POSITION) : SV_TARGET
