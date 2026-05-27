@@ -45,17 +45,17 @@ Shader "Unlit/FloatingCube"
             v2f vert (appdata v)
             {
                 v2f o;
-                float angle = fmod(sin(unity_ObjectToWorld._14 + unity_ObjectToWorld._34), 3.14);
+                float angle = sin(unity_ObjectToWorld._14 + unity_ObjectToWorld._34);
                 float4x4 rotZ = {
                     1, 0, 0, 0,
-					0, cos(radians(angle) + _Time.y), -sin(radians(angle) + _Time.y), 0,
-					0, sin(radians(angle) + _Time.y), cos(radians(angle) + _Time.y), 0,
+					0, cos(angle + _Time.y), -sin(angle + _Time.y), 0,
+					0, sin(angle + _Time.y), cos(angle + _Time.y), 0,
 					0, 0, 0, 1
                     };
                 float4x4 rotY = {
-                    cos(radians(angle) + _Time.y), 0, sin(radians(angle) + _Time.y), 0,
+                    cos(angle + _Time.y), 0, sin(angle + _Time.y), 0,
                     0, 1, 0, 0,
-                    -sin(radians(angle) + _Time.y), 0, cos(radians(angle) + _Time.y), 0,
+                    -sin(angle + _Time.y), 0, cos(angle + _Time.y), 0,
                     0, 0, 0, 1
                     };
                 float4x4 rotYZ = mul(rotZ, rotY);
@@ -97,14 +97,14 @@ Shader "Unlit/FloatingCube"
 				float angle = fmod(sin(unity_ObjectToWorld._14 + unity_ObjectToWorld._34), 3.14);
                 float4x4 rotZ = {
                     1, 0, 0, 0,
-					0, cos(radians(angle) + _Time.y), -sin(radians(angle) + _Time.y), 0,
-					0, sin(radians(angle) + _Time.y), cos(radians(angle) + _Time.y), 0,
+					0, cos(angle + _Time.y), -sin(angle + _Time.y), 0,
+					0, sin(angle + _Time.y), cos(angle + _Time.y), 0,
 					0, 0, 0, 1
                     };
                 float4x4 rotY = {
-                    cos(radians(angle) + _Time.y), 0, sin(radians(angle) + _Time.y), 0,
+                    cos(angle + _Time.y), 0, sin(angle + _Time.y), 0,
                     0, 1, 0, 0,
-                    -sin(radians(angle) + _Time.y), 0, cos(radians(angle) + _Time.y), 0,
+                    -sin(angle + _Time.y), 0, cos(angle + _Time.y), 0,
                     0, 0, 0, 1
                     };
                 float4x4 rotYZ = mul(rotZ, rotY);
