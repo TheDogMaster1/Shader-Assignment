@@ -24,11 +24,11 @@ public class EyeRotator : MonoBehaviour
         dirY.z = Mathf.Abs(dirY.z);
         Debug.DrawRay(transform.position, dirY.normalized, Color.green);
 
-        var rotDirY = Vector3.Cross(Vector3.forward, dirX);
-        var rotDirX = Vector3.Cross(Vector3.forward, dirY);
+        var rotDirY = Vector3.Cross(Vector3.forward, dirX.normalized);
+        var rotDirX = Vector3.Cross(Vector3.forward, dirY.normalized);
 
-        var angleX = Angle(dir, dirX);
-        var angleY = Angle(Vector3.forward, dirX);
+        var angleX = Angle(dir.normalized, dirX.normalized);
+        var angleY = Angle(Vector3.forward, dirX.normalized);
 
         if (dirX.magnitude == 0)
         {

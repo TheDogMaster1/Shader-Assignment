@@ -13,12 +13,6 @@ public class CameraMovement : MonoBehaviour
     private float mouseXSens = 90;
     [SerializeField]
     private float mouseYSens = 90;
-
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     void Update()
     {
         forwardInput = Input.GetAxis("Vertical");
@@ -33,9 +27,21 @@ public class CameraMovement : MonoBehaviour
         verticalInput = Mathf.Clamp(verticalInput, -1, 1);
         //Debug.Log(verticalInput);
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseXSens * Time.deltaTime;
-        float mouseY = -Input.GetAxis("Mouse Y") * mouseYSens * Time.deltaTime;
+        float mouseX = 0;
+        float mouseY = 0;
 
+        if (Input.GetMouseButton(1))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            mouseX = Input.GetAxis("Mouse X") * mouseXSens * Time.deltaTime;
+            mouseY = -Input.GetAxis("Mouse Y") * mouseYSens * Time.deltaTime;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         transform.Rotate(Vector3.up, mouseX, Space.World);
         verCamAngles += mouseY;
 
