@@ -91,6 +91,7 @@
     <None Include="Assets\ShadersMaterials\Regular\FloatingCube.shader" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\_SRP\_SRP_ReadMe.txt" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\_EyeAdvanced_ReadMe.txt" />
+    <None Include="Assets\ShadersMaterials\Regular\BillboardEye.shader" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD1.shader" />
     <None Include="Assets\ShadersMaterials\Regular\Heart.shader" />
     <None Include="Assets\ShadersMaterials\Regular\PatternShader.shader" />

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class StateChanger : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class StateChanger : MonoBehaviour
     private TextureCreator painting2;
     [SerializeField]
     private Light dirLight;
-
+    [SerializeField]
+    private Volume offVolume;
     void Start()
     {
         StateChangeTime = Random.Range(20, 30);
@@ -60,6 +62,7 @@ public class StateChanger : MonoBehaviour
 
         if (isDark)
         {
+            offVolume.weight = 1.0f;
             dirLight.intensity = 0.2f;
             GraphWater.SetFloat("_Monster", 1.1f);
             painting2.patternType = TextureCreator.PatternType.experiment;
@@ -69,6 +72,7 @@ public class StateChanger : MonoBehaviour
         }
         else
         {
+            offVolume.weight = 0;
             dirLight.intensity = 0;
             GraphWater.SetFloat("_Monster", 0);
             painting2.patternType = TextureCreator.PatternType.rainbowfunc;
