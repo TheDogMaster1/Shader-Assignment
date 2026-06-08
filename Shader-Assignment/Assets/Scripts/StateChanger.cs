@@ -16,11 +16,15 @@ public class StateChanger : MonoBehaviour
     [SerializeField]
     private Material[] shaders;
     [SerializeField]
+    private Material GraphWater;
+    [SerializeField]
     private GameObject pointLight;
     [SerializeField]
     private TextureCreator painting1;
     [SerializeField]
     private TextureCreator painting2;
+    [SerializeField]
+    private Light dirLight;
 
     void Start()
     {
@@ -56,6 +60,8 @@ public class StateChanger : MonoBehaviour
 
         if (isDark)
         {
+            dirLight.intensity = 0.2f;
+            GraphWater.SetFloat("_Monster", 1.1f);
             painting2.patternType = TextureCreator.PatternType.experiment;
             painting2.rotateType = TextureCreator.RotateType.middle;
             painting2.degrees = Random.Range(0, 360);
@@ -63,6 +69,8 @@ public class StateChanger : MonoBehaviour
         }
         else
         {
+            dirLight.intensity = 0;
+            GraphWater.SetFloat("_Monster", 0);
             painting2.patternType = TextureCreator.PatternType.rainbowfunc;
             painting2.rotateType = TextureCreator.RotateType.none;
             painting2.Draw();
@@ -90,5 +98,6 @@ public class StateChanger : MonoBehaviour
         {
             shader.SetInteger("_ShaderNums", 1);
         }
+        GraphWater.SetFloat("_Monster", 0);
     }
 }

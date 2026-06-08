@@ -64,6 +64,7 @@ Shader "Unlit/FloatingCube"
                 float offset = sin(unity_ObjectToWorld._14 + unity_ObjectToWorld._34);
                 world.y += sin(_Time.y + offset) * _Strength;
                 o.vertex = mul(UNITY_MATRIX_VP, world);
+                // o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = normalize(mul(UNITY_MATRIX_M, float4(v.vertex.xyz, 0)));
                 return o;

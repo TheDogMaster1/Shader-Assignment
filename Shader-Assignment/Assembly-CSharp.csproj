@@ -87,16 +87,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD2.shader" />
-    <None Include="Assets\ShadersMaterials\DefaultShader.shader" />
-    <None Include="Assets\ShadersMaterials\FloatingCube.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\DefaultShader.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\FloatingCube.shader" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\_SRP\_SRP_ReadMe.txt" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\_EyeAdvanced_ReadMe.txt" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD1.shader" />
-    <None Include="Assets\ShadersMaterials\Heart.shader" />
-    <None Include="Assets\ShadersMaterials\PatternShader.shader" />
-    <None Include="Assets\ShadersMaterials\Waves.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\Heart.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\PatternShader.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\Waves.shader" />
     <None Include="Assets\_External_Assets\EYE ADVANCED\Shaders\STANDARD\EyeAdvanced_LOD0.shader" />
-    <None Include="Assets\ShadersMaterials\Mandelbrot.shader" />
+    <None Include="Assets\ShadersMaterials\Regular\Mandelbrot.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -108,6 +108,7 @@ Shader "Unlit/Waves"
                 float3 horizontalIncrease = float3(1, 0, (colRight.x - colLeft.x) * _difStrength);
                 float3 verticalIncrease = float3(0, 1, (colUp.x - colDown.x) * _difStrength);
                 float3 normalVector = normalize(cross(horizontalIncrease, verticalIncrease));
+
 				float3 usedNormal = float3(1, 1, 1);
 				if(_ShaderNums == -1){
 					usedNormal = float3(normalVector.x, -normalVector.z, normalVector.y);
