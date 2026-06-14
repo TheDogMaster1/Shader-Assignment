@@ -36,7 +36,7 @@ Shader "Unlit/BillboardEye"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
-            v2f vert (appdata v)
+            v2f vert (appdata v) //https://www.youtube.com/watch?v=tijbAyRB3UY was used to help with this script.
             {
                 v2f o;
 
@@ -48,7 +48,6 @@ Shader "Unlit/BillboardEye"
 
                 float4 worldPos = mul(UNITY_MATRIX_M, v.vertex);
                 float4 viewPos = worldPos + translation;
-                // float4 clipPos = mul(UNITY_MATRIX_P, viewPos);
 
                 o.vertex = mul(UNITY_MATRIX_P, viewPos);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
