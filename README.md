@@ -11,4 +11,5 @@ The project contains multiple self made shaders. A couple of those shaders mainl
 5. open the project
 6. inside unity go to Assets/Scenes and double click MainScene.
 7. press play at the top
+   
 The game features a camera controller so you can look around. Pressing space bar during play mode will allow you to change the state of the scene.
